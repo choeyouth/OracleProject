@@ -1080,7 +1080,7 @@ BEGIN
             dbms_output.put_line('             ---------------------------------------------------------');
             
             dbms_output.put_line('〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰');
-            dbms_output.put_line(' ' || vcname);
+            dbms_output.put_line('      ' || vcname);
             dbms_output.put_line('〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰');
             
             vprevCname := vcname;
@@ -2736,6 +2736,11 @@ END;
 
 
 
+BEGIN
+    procEvaluationCourse(4, 1);
+END;
+/
+
 
 
 --교사 평가 조회
@@ -2811,16 +2816,20 @@ BEGIN
             INNER JOIN tblEvaluation e ON t.id = e.tblTeacher_id AND s.id = e.tblStudent_id
             group by oc.name, oc.startDate, oc.endDate, e.evaluationdate;
         
-        dbms_output.put_line('╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗');
-        dbms_output.put_line(' ' || vname || '(' || to_char(vstartDate, 'yyyy-mm-dd') || ' ~ ' || to_char(vendDate, 'yyyy-mm-dd') || ')');
-        dbms_output.put_line(' 평가일: ' || to_char(vevaluationDate, 'yyyy-mm-dd'));
-        dbms_output.put_line(' ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════');
+        dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');
+        dbms_output.put_line('╔═════════════════════════════════════════════════════════════════════════╗');
+        dbms_output.put_line('');
+        dbms_output.put_line('                ' || vname || '(' || to_char(vstartDate, 'yyyy-mm-dd') || ' ~ ' || to_char(vendDate, 'yyyy-mm-dd') || ')');
+        dbms_output.put_line('                평가일: ' || to_char(vevaluationDate, 'yyyy-mm-dd'));
+        dbms_output.put_line('');
+        dbms_output.put_line(' ══════════════════════════════════════════════════════════════════════════');
         dbms_output.put_line('               난이도             전달력               강의속도               종합 만족도               추천의사         ');
-        dbms_output.put_line(' ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════');
-        dbms_output.put_line('              ' || rpad(vdifficulty, 15, ' ') || '      ' || rpad(vcommunicationSkills, 15, ' ')
-            || '      ' || rpad(vlecturePace, 15, ' ') || '      ' || rpad(vsatisfaction, 15, ' ')
+        dbms_output.put_line(' ══════════════════════════════════════════════════════════════════════════');
+        dbms_output.put_line('               ' || rpad(vdifficulty, 13, ' ') || '      ' || rpad(vcommunicationSkills, 15, ' ')
+            || '      ' || rpad(vlecturePace, 17, ' ') || '      ' || rpad(vsatisfaction, 15, ' ')
             || '        ' || rpad(vrecommendation, 15, ' '));
-        dbms_output.put_line('╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝');
+        dbms_output.put_line('╚═════════════════════════════════════════════════════════════════════════╝');
+        dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');dbms_output.put_line('');
     END IF;
 END;
 /
@@ -3914,12 +3923,12 @@ BEGIN
         
         IF vreturnDate IS NULL THEN
             IF to_date(vrentalDate + 7, 'yyyy-mm-dd') > to_date(sysdate, 'yyyy-mm-dd') THEN 
-                dbms_output.put_line('╔══════════════════════════════════════════════════════════════════╗');
+                dbms_output.put_line('╔════════════════════════════════════════════════╗');
                 dbms_output.put_line('');
                 dbms_output.put_line('                 ' ||  vsname || ' 교육생의 ' || pname || ' 대여 반납 기한이');
                 dbms_output.put_line('                            ' || to_char(to_date(vrentalDate + 7, 'yyyy-mm-dd') - to_date(sysdate, 'yyyy-mm-dd')) || '일 남았습니다.');
                 dbms_output.put_line('');
-                dbms_output.put_line('╚══════════════════════════════════════════════════════════════════╝');
+                dbms_output.put_line('╚════════════════════════════════════════════════╝');
             ELSIF to_date(vrentalDate + 7, 'yyyy-mm-dd') = to_date(sysdate, 'yyyy-mm-dd') THEN
                 dbms_output.put_line('╔══════════════════════════════════════════════════════════════════╗');
                 dbms_output.put_line('');
@@ -3928,17 +3937,17 @@ BEGIN
                 dbms_output.put_line('');
                 dbms_output.put_line('╚══════════════════════════════════════════════════════════════════╝');
             ELSIF to_date(vrentalDate + 7, 'yyyy-mm-dd') < to_date(sysdate, 'yyyy-mm-dd') THEN
-                dbms_output.put_line('╔══════════════════════════════════════════════════════════════════╗');
+                dbms_output.put_line('╔═══════════════════════════════════════╗');
                 dbms_output.put_line('');
-                dbms_output.put_line('                 ' ||  vsname || ' 교육생의 ' || pname || ' 대여 반납 기한이');
-                dbms_output.put_line('                            지났습니다. 대여 물품을 반납해주세요.');
+                dbms_output.put_line('               ' ||  vsname || ' 교육생의 ' || pname || ' 대여 반납 기한이');
+                dbms_output.put_line('               지났습니다. 대여 물품을 반납해주세요.');
                 dbms_output.put_line('');
-                dbms_output.put_line('╚══════════════════════════════════════════════════════════════════╝');
+                dbms_output.put_line('╚═══════════════════════════════════════╝');
             END IF;
             dbms_output.put_line('====================================================================');
             dbms_output.put_line('       교육생 이름    교육생 전화번호     대여일      반납 마감 기한     ');
             dbms_output.put_line('====================================================================');
-            dbms_output.put_line('|         ' || vsname || '      ' || vstel || '     ' || vrentalDate || '        ' || to_date(vrentalDate  + 7, 'yyyy-mm-dd') || '      |');
+            dbms_output.put_line('|         ' || vsname || '        ' || vstel || '     ' || vrentalDate || '        ' || to_date(vrentalDate  + 7, 'yyyy-mm-dd') || '    |');
             dbms_output.put_line('--------------------------------------------------------------------');
         ELSIF vreturnDate IS NOT NULL THEN
             dbms_output.put_line('╔══════════════════════════════════════════════════════════════════╗');
@@ -3949,7 +3958,7 @@ BEGIN
             dbms_output.put_line('====================================================================');
             dbms_output.put_line('       교육생 이름      교육생 전화번호         대여일          반납일     ');
             dbms_output.put_line('====================================================================');
-            dbms_output.put_line('|         ' || vsname || '       ' || vstel || '        ' || vrentalDate || '       ' || vreturnDate || '   |');
+            dbms_output.put_line('|         ' || vsname || '        ' || vstel || '        ' || vrentalDate || '       ' || vreturnDate || '   |');
             dbms_output.put_line('--------------------------------------------------------------------');
   
         END IF;
